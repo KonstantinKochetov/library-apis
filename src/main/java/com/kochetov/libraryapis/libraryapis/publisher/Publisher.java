@@ -1,8 +1,9 @@
-package com.kochetov.libraryapis.libraryapis.publisher.model;
+package com.kochetov.libraryapis.libraryapis.publisher;
 
+// exposes to the outer world. Some devs use EntityClass directly, which is not a good practice (coupling) -> breaking API contract
 public class Publisher {
 
-    private String publisherId;
+    private Integer publisherId;
     private String name;
     private String emailId;
     private String phoneNumber;
@@ -10,18 +11,18 @@ public class Publisher {
     public Publisher() { // needed by Jackson
     }
 
-    public Publisher(String publisherId, String name, String emailId, String phoneNumber) {
+    public Publisher(Integer publisherId, String name, String emailId, String phoneNumber) {
         this.publisherId = publisherId;
         this.name = name;
         this.emailId = emailId;
         this.phoneNumber = phoneNumber;
     }
 
-    public String getPublisherId() {
+    public Integer getPublisherId() {
         return publisherId;
     }
 
-    public void setPublisherId(String publisherId) {
+    public void setPublisherId(Integer publisherId) {
         this.publisherId = publisherId;
     }
 
