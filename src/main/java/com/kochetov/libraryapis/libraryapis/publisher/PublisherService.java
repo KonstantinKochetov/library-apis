@@ -68,7 +68,7 @@ public class PublisherService {
             }
             publisherRepository.save(pe);
         } else {
-            throw new LibraryResourceNotFoundException("Publisher Id: " + publisherToBeUpdated.getPublisherId() + "Not Found");
+            throw new LibraryResourceNotFoundException("Publisher Id: " + publisherToBeUpdated.getPublisherId() + " Not Found");
         }
 
     }
@@ -77,7 +77,7 @@ public class PublisherService {
         try {
             publisherRepository.deleteById(publisherId);
         } catch (EmptyResultDataAccessException e) {
-            throw new LibraryResourceNotFoundException("Publisher Id: " + publisherId + "Not Found");
+            throw new LibraryResourceNotFoundException("Publisher Id: " + publisherId + " Not Found");
         }
     }
 
