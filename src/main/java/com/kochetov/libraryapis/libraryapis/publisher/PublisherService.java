@@ -3,6 +3,8 @@ package com.kochetov.libraryapis.libraryapis.publisher;
 import com.kochetov.libraryapis.libraryapis.publisher.exception.LibraryResourceAlreadyExistException;
 import com.kochetov.libraryapis.libraryapis.publisher.exception.LibraryResourceNotFoundException;
 import com.kochetov.libraryapis.libraryapis.util.LibraryApiUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,8 @@ import java.util.stream.Collectors;
 @Service
 public class PublisherService {
 
+    private static Logger logger = LoggerFactory.getLogger(PublisherService.class);
+
     private PublisherRepository publisherRepository;
 
     public PublisherService(PublisherRepository publisherRepository) {
@@ -23,6 +27,7 @@ public class PublisherService {
 
     public void addPublisher(Publisher publisherToBeAdded, String traceId) throws LibraryResourceAlreadyExistException {
 
+        logger.debug("TraceId: {}, Request to add Publisher: {}", traceId, publisherToBeAdded);
         PublisherEntity publisherEntity = new PublisherEntity(
                 publisherToBeAdded.getName(),
                 publisherToBeAdded.getEmailId(),
@@ -34,10 +39,12 @@ public class PublisherService {
         try {
             addedPublisher = publisherRepository.save(publisherEntity);
         } catch (DataIntegrityViolationException e) {
+            logger.error("TraceId: {}, Publisher already exists!!", traceId, e);
             throw new LibraryResourceAlreadyExistException("TraceId: " + traceId + " Publisher already exists!");
         }
 
         publisherToBeAdded.setPublisherId((addedPublisher.getPublisherId()));
+        logger.info("TraceId: {}, Publisher added: {}", traceId, publisherToBeAdded);
     }
 
     public Publisher getPublisher(Integer publisherId, String traceId) throws LibraryResourceNotFoundException {
@@ -77,6 +84,7 @@ public class PublisherService {
         try {
             publisherRepository.deleteById(publisherId);
         } catch (EmptyResultDataAccessException e) {
+            logger.error("TraceId: {}, Publisher Id: {} Not Found", traceId, publisherId, e);
             throw new LibraryResourceNotFoundException("TraceId: " + traceId + " Publisher Id: " + publisherId + " Not Found");
         }
     }
