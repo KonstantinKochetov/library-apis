@@ -1,7 +1,7 @@
 package com.kochetov.libraryapis.libraryapis.publisher;
 
-import com.kochetov.libraryapis.libraryapis.publisher.exception.LibraryResourceAlreadyExistException;
-import com.kochetov.libraryapis.libraryapis.publisher.exception.LibraryResourceNotFoundException;
+import com.kochetov.libraryapis.libraryapis.exception.LibraryResourceAlreadyExistException;
+import com.kochetov.libraryapis.libraryapis.exception.LibraryResourceNotFoundException;
 import com.kochetov.libraryapis.libraryapis.util.LibraryApiUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
