@@ -1,11 +1,23 @@
 package com.kochetov.libraryapis.libraryapis.publisher;
 
-// exposes to the outer world. Some devs use EntityClass directly, which is not a good practice (coupling) -> breaking API contract
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+// exposed to the outer world. Some devs use EntityClass directly, which is not a good practice (coupling) -> breaking API contract
 public class Publisher {
 
-    private Integer publisherId;
+    private Integer publisherId; // not needed to be validated
+
+    @NotNull
+    @Size(min = 1, max = 50, message = "Publihser name must be between 1 and 50 characters") // check database constraint
     private String name;
+
+    @Email(message = "Please enter a valid Email Id")
     private String emailId;
+
+    @Pattern(regexp = "\\d{3}-\\d{3}-\\d{3}", message = "Please enter phone number is format 123-456-789")
     private String phoneNumber;
 
     public Publisher() { // needed by Jackson
