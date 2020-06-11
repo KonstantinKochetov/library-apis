@@ -39,7 +39,7 @@ public class LibraryControllerExceptionHandler extends ResponseEntityExceptionHa
         return new ResponseEntity<>(new LibraryApiError(e.getTraceId(), e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
-    // if exception does not match any custom exceptions we list here
+    // if exception does not match any custom exceptions listed above
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<LibraryApiError> handleAllException(
             Exception e, WebRequest webRequest) {
