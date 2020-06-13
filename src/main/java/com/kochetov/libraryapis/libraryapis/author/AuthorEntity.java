@@ -31,6 +31,7 @@ public class AuthorEntity {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
+    // mappedBy defines that this entity is not responsible for the join configuration
     @ManyToMany(fetch = FetchType.LAZY,
                 cascade = CascadeType.ALL,
                 mappedBy = "authors")

@@ -31,7 +31,7 @@ public class PublisherController {
                                           @RequestHeader(value = "Trace-Id", defaultValue = "") String traceId)
             throws LibraryResourceNotFoundException {
 
-        if(!LibraryApiUtils.doesStringValueExist(traceId)) {
+        if (!LibraryApiUtils.doesStringValueExist(traceId)) {
             traceId = UUID.randomUUID().toString();
         }
 
@@ -45,11 +45,11 @@ public class PublisherController {
             throws LibraryResourceAlreadyExistException, LibraryResourceUnauthorizedException {
 
         logger.debug("Request to add Publisher: {}", publisher);
-        if(!LibraryApiUtils.doesStringValueExist(traceId)) {
+        if (!LibraryApiUtils.doesStringValueExist(traceId)) {
             traceId = UUID.randomUUID().toString();
         }
 
-        if(!LibraryApiUtils.isUserAdmin(bearerToken)) {
+        if (!LibraryApiUtils.isUserAdmin(bearerToken)) {
             logger.error(LibraryApiUtils.getUserIdFromClaim(bearerToken) + " attempted to add a Publisher. Disallowed because user is not Admin");
             throw new LibraryResourceUnauthorizedException(traceId, "User not allowed to Add a Publisher");
         }
@@ -67,11 +67,11 @@ public class PublisherController {
                                              @RequestHeader(value = "Authorization") String bearerToken)
             throws LibraryResourceNotFoundException, LibraryResourceUnauthorizedException {
 
-        if(!LibraryApiUtils.doesStringValueExist(traceId)) {
+        if (!LibraryApiUtils.doesStringValueExist(traceId)) {
             traceId = UUID.randomUUID().toString();
         }
 
-        if(!LibraryApiUtils.isUserAdmin(bearerToken)) {
+        if (!LibraryApiUtils.isUserAdmin(bearerToken)) {
             logger.error(LibraryApiUtils.getUserIdFromClaim(bearerToken) + " attempted to update a Publisher. Disallowed because user is not Admin");
             throw new LibraryResourceUnauthorizedException(traceId, "User not allowed to Add a Publisher");
         }
@@ -90,11 +90,11 @@ public class PublisherController {
                                              @RequestHeader(value = "Authorization") String bearerToken)
             throws LibraryResourceNotFoundException, LibraryResourceUnauthorizedException {
 
-        if(!LibraryApiUtils.doesStringValueExist(traceId)) {
+        if (!LibraryApiUtils.doesStringValueExist(traceId)) {
             traceId = UUID.randomUUID().toString();
         }
 
-        if(!LibraryApiUtils.isUserAdmin(bearerToken)) {
+        if (!LibraryApiUtils.isUserAdmin(bearerToken)) {
             logger.error(LibraryApiUtils.getUserIdFromClaim(bearerToken) + " attempted to delete a Publisher. Disallowed because user is not Admin");
             throw new LibraryResourceUnauthorizedException(traceId, "User not allowed to Add a Publisher");
         }
@@ -110,11 +110,11 @@ public class PublisherController {
                                              @RequestHeader(value = "Trace-Id", defaultValue = "") String traceId)
             throws LibraryResourceBadRequestException {
 
-        if(!LibraryApiUtils.doesStringValueExist(traceId)) {
+        if (!LibraryApiUtils.doesStringValueExist(traceId)) {
             traceId = UUID.randomUUID().toString();
         }
 
-        if(!LibraryApiUtils.doesStringValueExist(name)) {
+        if (!LibraryApiUtils.doesStringValueExist(name)) {
             logger.error("TraceId: {}, Please enter a name to search Publisher!!", traceId);
             throw new LibraryResourceBadRequestException(traceId, "Please enter a name to search Publisher.");
         }

@@ -6,6 +6,7 @@ import javax.persistence.*;
 @Table(name = "BOOK_STATUS")
 public class BookStatusEntity {
 
+//    We don't generate it (no annotation) because it is basically a foreign key in book table (look at sql script)
     @Column(name = "Book_Id")
     @Id
     private int bookId;
@@ -20,6 +21,7 @@ public class BookStatusEntity {
     @Column(name = "Number_Of_Copies_Issued")
     private int numberOfCopiesIssued;
 
+    // Handling two tables
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "Book_Id", nullable = false)
     private BookEntity bookEntity;

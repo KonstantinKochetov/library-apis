@@ -39,6 +39,7 @@ public class BookService {
         this.authorRepository = authorRepository;
     }
 
+    // cuz we have two db operations
     @Transactional
     public void addBook(Book bookToBeAdded, String traceId)
             throws LibraryResourceAlreadyExistException, LibraryResourceNotFoundException {
@@ -54,7 +55,7 @@ public class BookService {
         // Get the parent of the Book (Publisher is the parent). If not found throw an exception
         Optional<PublisherEntity> publisherEntity = publisherRepository.findById(bookToBeAdded.getPublisherId());
 
-        if(publisherEntity.isPresent()) {
+        if (publisherEntity.isPresent()) {
             bookEntity.setPublisher(publisherEntity.get());
         } else {
             throw new LibraryResourceNotFoundException(traceId, "Publisher mentioned for the book does not exist");
@@ -86,7 +87,7 @@ public class BookService {
     public Book getBook(Integer bookId, String traceId) throws LibraryResourceNotFoundException {
 
         Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
-        if(bookEntity.isPresent()) {
+        if (bookEntity.isPresent()) {
 
             BookEntity pe = bookEntity.get();
             return createBookFromEntity(pe);
@@ -101,13 +102,13 @@ public class BookService {
         Optional<BookEntity> bookEntity = bookRepository.findById(bookToBeUpdated.getBookId());
         Book book = null;
 
-        if(bookEntity.isPresent()) {
+        if (bookEntity.isPresent()) {
 
             BookEntity pe = bookEntity.get();
-            if(LibraryApiUtils.doesStringValueExist(bookToBeUpdated.getEdition())) {
+            if (LibraryApiUtils.doesStringValueExist(bookToBeUpdated.getEdition())) {
                 pe.setEdition(bookToBeUpdated.getEdition());
             }
-            if(bookToBeUpdated.getYearPublished() != null) {
+            if (bookToBeUpdated.getYearPublished() != null) {
                 pe.setYearPublished(bookToBeUpdated.getYearPublished());
             }
             bookRepository.save(pe);
@@ -124,7 +125,7 @@ public class BookService {
 
         try {
             bookRepository.deleteById(bookId);
-        } catch(EmptyResultDataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             logger.error("TraceId: {}, Book Id: {} Not Found", traceId, bookId, e);
             throw new LibraryResourceNotFoundException(traceId, "Book Id: " + bookId + " Not Found");
         }
@@ -135,7 +136,7 @@ public class BookService {
             throws LibraryResourceNotFoundException {
 
         Optional<BookEntity> bookEntity = bookRepository.findById(bookId);
-        if(bookEntity.isPresent()) {
+        if (bookEntity.isPresent()) {
             BookEntity be = bookEntity.get();
             Set<AuthorEntity> authors = authorIds.stream()
                     .map(authorId -> authorRepository.findById(authorId))
@@ -144,7 +145,7 @@ public class BookService {
                     .map(ae -> ae.get())
                     .collect(Collectors.toSet());
 
-            if(authors.size() == 0) {
+            if (authors.size() == 0) {
                 throw new LibraryResourceNotFoundException(traceId, "Book Id: " + bookId + ". None of the authors were found");
             }
 
@@ -160,10 +161,10 @@ public class BookService {
     public List<Book> searchBookByTitle(String title, String traceId) {
 
         List<BookEntity> bookEntities = null;
-        if(LibraryApiUtils.doesStringValueExist(title)) {
+        if (LibraryApiUtils.doesStringValueExist(title)) {
             bookEntities = bookRepository.findByTitleContaining(title);
         }
-        if(bookEntities != null && bookEntities.size() > 0) {
+        if (bookEntities != null && bookEntities.size() > 0) {
             return createBooksForSearchResponse(bookEntities);
         } else {
             return Collections.emptyList();
@@ -182,7 +183,7 @@ public class BookService {
         Book book = new Book(be.getBookId(), be.getIsbn(), be.getTitle(), be.getPublisher().getPublisherId(),
                 be.getYearPublished(), be.getEdition(), createBookStatusFromEntity(be.getBookStatus()));
 
-        if(be.getAuthors() != null && be.getAuthors().size() > 0) {
+        if (be.getAuthors() != null && be.getAuthors().size() > 0) {
             Set<Author> authors = be.getAuthors().stream()
                     .map(authorEntity -> {
                         AuthorEntity ae = authorRepository.findById(authorEntity.getAuthorId()).get();

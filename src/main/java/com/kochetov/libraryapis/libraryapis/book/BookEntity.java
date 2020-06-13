@@ -35,11 +35,18 @@ public class BookEntity {
                 nullable = false)
     private PublisherEntity publisher;
 
+//    OneToOne book -> bookstatus, book entity is parent so we use mappedBy.
+//    By this we tell hibernate that bookEntity is not responsible for the relationship
+//    Book Entity is responsible
+//    Hibernate will hate to look into bookstatus to find configuration for the join or key column
     @OneToOne(fetch = FetchType.LAZY,
               cascade = CascadeType.ALL,
                 mappedBy = "bookEntity")
     private BookStatusEntity bookStatus;
 
+    // bi directional
+    // manytomany annotation is used in both, but only one entity can be the owner
+    // Book is the owner of the relationship
     @ManyToMany(fetch = FetchType.LAZY,
                 cascade = CascadeType.ALL)
     @JoinTable(name = "book_author", joinColumns = @JoinColumn(name = "book_id"),

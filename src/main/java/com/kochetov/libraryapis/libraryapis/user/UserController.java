@@ -33,18 +33,18 @@ public class UserController {
                                      @RequestHeader(value = "Authorization") String bearerToken)
             throws LibraryResourceNotFoundException, LibraryResourceUnauthorizedException {
 
-        if(!LibraryApiUtils.doesStringValueExist(traceId)) {
+        if (!LibraryApiUtils.doesStringValueExist(traceId)) {
             traceId = UUID.randomUUID().toString();
         }
         logger.debug("Added TraceId: {}", traceId);
 
-        if(LibraryApiUtils.isUserAdmin(bearerToken)) {
+        if (LibraryApiUtils.isUserAdmin(bearerToken)) {
             logger.error("Trace Id: {}, even an admin user is not allowed to get a user's details", traceId);
             throw new LibraryResourceUnauthorizedException(traceId, "Even an admin user is not allowed to get a user's details");
         }
 
         int userIdInClaim = LibraryApiUtils.getUserIdFromClaim(bearerToken);
-        if(userIdInClaim != userId) {
+        if (userIdInClaim != userId) {
             logger.error("Trace Id: {}, UserId {} not allowed to get the details of another user {} ", traceId, userIdInClaim, userId);
             throw new LibraryResourceUnauthorizedException(traceId, "Not allowed to get the details of another user");
         }
@@ -58,7 +58,7 @@ public class UserController {
             throws LibraryResourceAlreadyExistException {
 
         logger.debug("Request to add User: {}", user);
-        if(!LibraryApiUtils.doesStringValueExist(traceId)) {
+        if (!LibraryApiUtils.doesStringValueExist(traceId)) {
             traceId = UUID.randomUUID().toString();
         }
         logger.debug("Added TraceId: {}", traceId);
@@ -75,17 +75,17 @@ public class UserController {
                                         @RequestHeader(value = "Authorization") String bearerToken)
             throws LibraryResourceNotFoundException, LibraryResourceUnauthorizedException {
 
-        if(!LibraryApiUtils.doesStringValueExist(traceId)) {
+        if (!LibraryApiUtils.doesStringValueExist(traceId)) {
             traceId = UUID.randomUUID().toString();
         }
         logger.debug("Added TraceId: {}", traceId);
-        if(LibraryApiUtils.isUserAdmin(bearerToken)) {
+        if (LibraryApiUtils.isUserAdmin(bearerToken)) {
             logger.error("Trace Id: {}, even an admin user is not allowed to update a user's details", traceId);
             throw new LibraryResourceUnauthorizedException(traceId, "Even an admin user is not allowed to update a user's details");
         }
 
         int userIdInClaim = LibraryApiUtils.getUserIdFromClaim(bearerToken);
-        if(userIdInClaim != userId) {
+        if (userIdInClaim != userId) {
             logger.error("Trace Id: {}, UserId {} not allowed to update the details of another user {} ", traceId, userIdInClaim, userId);
             throw new LibraryResourceUnauthorizedException(traceId, "Not allowed to update the details of another user");
         }
@@ -101,18 +101,18 @@ public class UserController {
                                         @RequestHeader(value = "Authorization") String bearerToken)
             throws LibraryResourceNotFoundException, LibraryResourceUnauthorizedException {
 
-        if(!LibraryApiUtils.doesStringValueExist(traceId)) {
+        if (!LibraryApiUtils.doesStringValueExist(traceId)) {
             traceId = UUID.randomUUID().toString();
         }
         logger.debug("Added TraceId: {}", traceId);
 
-        if(LibraryApiUtils.isUserAdmin(bearerToken)) {
+        if (LibraryApiUtils.isUserAdmin(bearerToken)) {
             logger.error("Trace Id: {}, even an admin user is not allowed to delete a user", traceId);
             throw new LibraryResourceUnauthorizedException(traceId, "Even an admin user is not allowed to delete a user");
         }
 
         int userIdInClaim = LibraryApiUtils.getUserIdFromClaim(bearerToken);
-        if(userIdInClaim != userId) {
+        if (userIdInClaim != userId) {
             logger.error("Trace Id: {}, UserId {} not allowed to delete another user {} ", traceId, userIdInClaim, userId);
             throw new LibraryResourceUnauthorizedException(traceId, "Not allowed to delete another user");
         }
@@ -127,11 +127,11 @@ public class UserController {
                                         @RequestHeader(value = "Trace-Id", defaultValue = "") String traceId)
             throws LibraryResourceBadRequestException {
 
-        if(!LibraryApiUtils.doesStringValueExist(traceId)) {
+        if (!LibraryApiUtils.doesStringValueExist(traceId)) {
             traceId = UUID.randomUUID().toString();
         }
 
-        if(!LibraryApiUtils.doesStringValueExist(firstName) && !LibraryApiUtils.doesStringValueExist(lastName)) {
+        if (!LibraryApiUtils.doesStringValueExist(firstName) && !LibraryApiUtils.doesStringValueExist(lastName)) {
             logger.error("TraceId: {}, Please enter at least one search criteria to search Users!!", traceId);
             throw new LibraryResourceBadRequestException(traceId, "Please enter a name to search User.");
         }
@@ -144,16 +144,16 @@ public class UserController {
                                         @RequestHeader("Authorization") String bearerToken,
                                         @RequestHeader(value = "Trace-Id", defaultValue = "") String traceId)
             throws LibraryResourceUnauthorizedException, LibraryResourceBadRequestException, LibraryResourceNotFoundException {
-        if(!LibraryApiUtils.doesStringValueExist(traceId)) {
+        if (!LibraryApiUtils.doesStringValueExist(traceId)) {
             traceId = UUID.randomUUID().toString();
         }
-        if(!LibraryApiUtils.isUserAdmin(bearerToken)) {
+        if (!LibraryApiUtils.isUserAdmin(bearerToken)) {
             // Logging UserId for security audit trail.
-            logger.error(traceId +  LibraryApiUtils.getUserIdFromClaim(bearerToken) + " attempted to issue Books. Disallowed. " +
+            logger.error(traceId + LibraryApiUtils.getUserIdFromClaim(bearerToken) + " attempted to issue Books. Disallowed. " +
                     "User is not a Admin.");
             throw new LibraryResourceUnauthorizedException(traceId, " attempted to issue Books. Disallowed.");
         }
-        if(bookIds == null || bookIds.size() == 0) {
+        if (bookIds == null || bookIds.size() == 0) {
             logger.error(traceId + " Invalid Book list. List is either not present or empty.");
             throw new LibraryResourceBadRequestException(traceId, "Invalid Book list. List is either not present or empty.");
         }
@@ -172,12 +172,12 @@ public class UserController {
                                          @RequestHeader("Authorization") String bearerToken,
                                          @RequestHeader(value = "Trace-Id", defaultValue = "") String traceId)
             throws LibraryResourceUnauthorizedException, LibraryResourceBadRequestException, LibraryResourceNotFoundException {
-        if(!LibraryApiUtils.doesStringValueExist(traceId)) {
+        if (!LibraryApiUtils.doesStringValueExist(traceId)) {
             traceId = UUID.randomUUID().toString();
         }
-        if(!LibraryApiUtils.isUserAdmin(bearerToken)) {
+        if (!LibraryApiUtils.isUserAdmin(bearerToken)) {
             // Logging UserId for security audit trail.
-            logger.error(traceId +  LibraryApiUtils.getUserIdFromClaim(bearerToken) + " attempted to return Books. Disallowed. " +
+            logger.error(traceId + LibraryApiUtils.getUserIdFromClaim(bearerToken) + " attempted to return Books. Disallowed. " +
                     "User is not a Admin.");
             throw new LibraryResourceUnauthorizedException(traceId, " attempted to delete Books. Disallowed.");
         }
