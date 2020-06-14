@@ -8,6 +8,7 @@ import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
+// this annotation exclude all null values when returning response
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Book {
 
