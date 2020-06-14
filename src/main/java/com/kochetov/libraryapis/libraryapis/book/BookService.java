@@ -118,7 +118,6 @@ public class BookService {
         } else {
             throw new LibraryResourceNotFoundException(traceId, "Book Id: " + bookToBeUpdated.getBookId() + " Not Found");
         }
-
     }
 
     public void deleteBook(Integer bookId, String traceId) throws LibraryResourceNotFoundException {
