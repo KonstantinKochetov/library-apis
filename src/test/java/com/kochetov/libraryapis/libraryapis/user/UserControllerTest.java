@@ -37,7 +37,7 @@ public class UserControllerTest {
 
     @Autowired
     Environment environment;
-    
+
     @Before
     public void setUp() throws Exception {
     }
@@ -360,7 +360,7 @@ public class UserControllerTest {
     public void searchUsers_success() {
 
         // Register 10 users
-        for(int i=0; i<10; i++) {
+        for (int i = 0; i < 10; i++) {
             libraryApiIntegrationTestUtil.registerNewUser("searchUsers.success" + i);
         }
 
@@ -377,7 +377,7 @@ public class UserControllerTest {
         Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
         // Comparing with >= 10 because depending upon which other test methods run the number of users may vary
         Assert.assertTrue(response.getBody().length >= 10);
-        for(User libraryUser : response.getBody()) {
+        for (User libraryUser : response.getBody()) {
             Assert.assertTrue(libraryUser.getFirstName().contains(TestConstants.TEST_USER_FIRST_NAME));
             Assert.assertTrue(libraryUser.getLastName().contains(TestConstants.TEST_USER_LAST_NAME));
         }

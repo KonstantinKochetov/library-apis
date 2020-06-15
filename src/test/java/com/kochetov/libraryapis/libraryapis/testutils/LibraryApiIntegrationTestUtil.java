@@ -42,7 +42,7 @@ public class LibraryApiIntegrationTestUtil {
     }
 
     public ResponseEntity<String> loginUser(String username, String password) {
-
+        // for not login everytime
         if (username.equals("adminUsername") && (adminLoginResponse != null)) {
             return adminLoginResponse;
         }
@@ -57,7 +57,7 @@ public class LibraryApiIntegrationTestUtil {
         HttpEntity<String> loginRequest = new HttpEntity<>(createLoginBody(username, password));
         ResponseEntity<String> responseEntity = testRestTemplate.postForEntity(loginUri, loginRequest, String.class);
 
-        if(username.equals("adminUsername")) {
+        if (username.equals("adminUsername")) {
             adminLoginResponse = responseEntity;
         }
 
