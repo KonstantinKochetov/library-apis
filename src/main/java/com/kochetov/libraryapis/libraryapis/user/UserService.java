@@ -80,7 +80,7 @@ public class UserService {
         Optional<UserEntity> userEntity = userRepository.findById(userId);
         User user = null;
 
-        if(userEntity.isPresent()) {
+        if (userEntity.isPresent()) {
             UserEntity pe = userEntity.get();
             user = createUserFromEntity(pe);
         } else {
@@ -94,15 +94,15 @@ public class UserService {
 
         Optional<UserEntity> userEntity = userRepository.findById(userToBeUpdated.getUserId());
 
-        if(userEntity.isPresent()) {
+        if (userEntity.isPresent()) {
             UserEntity ue = userEntity.get();
-            if(LibraryApiUtils.doesStringValueExist(userToBeUpdated.getEmailId())) {
+            if (LibraryApiUtils.doesStringValueExist(userToBeUpdated.getEmailId())) {
                 ue.setEmailId(userToBeUpdated.getEmailId());
             }
-            if(LibraryApiUtils.doesStringValueExist(userToBeUpdated.getPhoneNumber())) {
+            if (LibraryApiUtils.doesStringValueExist(userToBeUpdated.getPhoneNumber())) {
                 ue.setPhoneNumber(userToBeUpdated.getPhoneNumber());
             }
-            if(LibraryApiUtils.doesStringValueExist(userToBeUpdated.getPassword())) {
+            if (LibraryApiUtils.doesStringValueExist(userToBeUpdated.getPassword())) {
                 ue.setPassword(bCryptPasswordEncoder.encode(userToBeUpdated.getPassword()));
             }
             userRepository.save(ue);
@@ -119,7 +119,7 @@ public class UserService {
 
         try {
             userRepository.deleteById(userId);
-        } catch(EmptyResultDataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             logger.error("TraceId: {}, User Id: {} Not Found", traceId, userId, e);
             throw new LibraryResourceNotFoundException(traceId, "User Id: " + userId + " Not Found");
         }
@@ -128,14 +128,14 @@ public class UserService {
     public List<User> searchUser(String firstName, String lastName, String traceId) {
 
         List<UserEntity> userEntities = null;
-        if(LibraryApiUtils.doesStringValueExist(firstName) && LibraryApiUtils.doesStringValueExist(lastName)) {
+        if (LibraryApiUtils.doesStringValueExist(firstName) && LibraryApiUtils.doesStringValueExist(lastName)) {
             userEntities = userRepository.findByFirstNameAndLastNameContaining(firstName, lastName);
-        } else if(LibraryApiUtils.doesStringValueExist(firstName) && !LibraryApiUtils.doesStringValueExist(lastName)) {
+        } else if (LibraryApiUtils.doesStringValueExist(firstName) && !LibraryApiUtils.doesStringValueExist(lastName)) {
             userEntities = userRepository.findByFirstNameContaining(firstName);
-        } else if(!LibraryApiUtils.doesStringValueExist(firstName) && LibraryApiUtils.doesStringValueExist(lastName)) {
+        } else if (!LibraryApiUtils.doesStringValueExist(firstName) && LibraryApiUtils.doesStringValueExist(lastName)) {
             userEntities = userRepository.findByLastNameContaining(lastName);
         }
-        if(userEntities != null && userEntities.size() > 0) {
+        if (userEntities != null && userEntities.size() > 0) {
             return createUsersForSearchResponse(userEntities);
         } else {
             return Collections.emptyList();
@@ -147,7 +147,7 @@ public class UserService {
 
         Optional<UserEntity> userEntity = userRepository.findById(userId);
 
-        if(userEntity.isPresent()) {
+        if (userEntity.isPresent()) {
             Set<IssueBookStatus> issueBookStatuses = new HashSet<>(bookIds.size());
             // Find out if the supplied list of books is issue-able or not
             bookIds.stream()
@@ -159,14 +159,14 @@ public class UserService {
                         } else {
                             BookStatusEntity bse = be.get().getBookStatus();
                             if ((bse.getTotalNumberOfCopies() - bse.getNumberOfCopiesIssued()) == 0) {
-                                bookStatus = new IssueBookStatus(bookId,"Not Issued", "No copies available");
+                                bookStatus = new IssueBookStatus(bookId, "Not Issued", "No copies available");
                             } else {
                                 // Check if the book has already been issued to the user, and this can be re-issued
                                 List<UserBookEntity> byUserIdAndBookId = userBookEntityRepository.findByUserIdAndBookId(userId, bookId);
-                                if(byUserIdAndBookId != null && byUserIdAndBookId.size() > 0) {
+                                if (byUserIdAndBookId != null && byUserIdAndBookId.size() > 0) {
                                     // Book can be re-issued
                                     UserBookEntity userBookEntity = byUserIdAndBookId.get(0);
-                                    if(userBookEntity.getNumberOfTimesIssued() < maxNumberOfTimesIssue) {
+                                    if (userBookEntity.getNumberOfTimesIssued() < maxNumberOfTimesIssue) {
                                         userBookEntity.setNumberOfTimesIssued(userBookEntity.getNumberOfTimesIssued() + 1);
                                         userBookEntity.setIssuedDate(LocalDate.now());
                                         userBookEntity.setReturnDate(LocalDate.now().plusDays(14));
@@ -207,9 +207,9 @@ public class UserService {
 
         Optional<UserEntity> userEntity = userRepository.findById(userId);
 
-        if(userEntity.isPresent()) {
+        if (userEntity.isPresent()) {
             List<UserBookEntity> byUserIdAndBookId = userBookEntityRepository.findByUserIdAndBookId(userId, bookId);
-            if(byUserIdAndBookId != null && byUserIdAndBookId.size() > 0) {
+            if (byUserIdAndBookId != null && byUserIdAndBookId.size() > 0) {
                 // Return the book
                 userBookEntityRepository.delete(byUserIdAndBookId.get(0));
 
@@ -219,7 +219,7 @@ public class UserService {
                 bs.setNumberOfCopiesIssued(bs.getNumberOfCopiesIssued() - 1);
                 bookStatusRepository.save(bs);
             } else {
-                throw new LibraryResourceNotFoundException(traceId, "Book Id: " + bookId + " has not been issued to User Id: "+ userId + ". So can't be returned.");
+                throw new LibraryResourceNotFoundException(traceId, "Book Id: " + bookId + " has not been issued to User Id: " + userId + ". So can't be returned.");
             }
 
         } else {
@@ -231,7 +231,7 @@ public class UserService {
 
         UserEntity userEntity = userRepository.findByUsername(username);
 
-        if(userEntity != null) {
+        if (userEntity != null) {
             return createUserFromEntityForLogin(userEntity);
         } else {
             throw new LibraryResourceNotFoundException(null, "LibraryUsername: " + username + " Not Found");
